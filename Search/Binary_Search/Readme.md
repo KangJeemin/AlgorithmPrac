@@ -1,6 +1,6 @@
-#시간복잡도 : O(logN)
+# 시간복잡도 : O(logN)
 
-##Basic Binary Search 코드
+## Basic Binary Search 코드
 ```
 int binarySearch(const vector<int>& arr, int target) {
     int left = 0, right = arr.size() - 1;
