@@ -2,10 +2,12 @@
 #include <algorithm>
 #include <climits>
 using namespace std;
+
+// 1 based-index
 int LtoR[100001] = {
     0,
 };
-int RtoL[100003] = {
+int RtoL[100001] = {
     0,
 };
 
@@ -32,6 +34,7 @@ int main()
     {
         // 내가 이걸 떠올리지 못했음
         LtoR[i] = max(LtoR[i - 1] + inputArray[i], inputArray[i]);
+        // 1개도 삭제하지 않을 때 최댓값 (꼭 필요함)
         ans = max(LtoR[i], ans);
     }
     // 주어진 수열의 끝 부터 1번 인덱스까지 역으로 수열의 최대 합 조사하기
@@ -40,9 +43,8 @@ int main()
         RtoL[i] = max(RtoL[i + 1] + inputArray[i], inputArray[i]);
     }
 
-    for (int i = 1; i <= N - 1; i++)
+    for (int i = 1; i <= N - 2; i++)
     {
-
         ans = max(LtoR[i] + RtoL[i + 2], ans);
     }
     cout << ans;
