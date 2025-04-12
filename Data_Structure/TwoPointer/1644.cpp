@@ -26,9 +26,9 @@ int main()
     odd[1] = true;
 
     // 에라토스체로 소수 구하기 시간복잡도 = O(Nlog*logN)
-    for (int i = 2; i < sqrt(N); i++)
+    for (int i = 2; i <= sqrt(N); i++)
     {
-        for (int j = i * i; j <= N; j++)
+        for (int j = i * i; j <= N; j += i)
         {
             if (!odd[j])
             {
