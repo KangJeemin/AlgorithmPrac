@@ -61,7 +61,7 @@ int main()
             }
             if (nextindex > N)
                 break;
-            sum -= startindex;
+            sum -= nextindex;
             startindex = nextindex;
         }
         // endindex 증가시키기
@@ -77,7 +77,8 @@ int main()
                     break;
                 }
             }
-
+            if (nextindex > N)
+                break;
             endindex = nextindex;
             sum += endindex;
         }
