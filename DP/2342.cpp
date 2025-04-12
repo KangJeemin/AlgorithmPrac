@@ -1,75 +1,67 @@
 #include <iostream>
-#include <cmath>
+#include <algorithm>
 #include <climits>
-#include <cmath>
+
 using namespace std;
 
-// dp[N][L][R]= N개 수열을 수행하였고 왼쪽이 L, 오른쪽이 R 자리에 있을 때 최소 누적합
-static long dp[100001][5][5];
-
-// 한발을 이동할 떄 드는 힘을 미리 저장하기 np[1][2] -> 1에서 2로 이동할때 드는 힘
-int mp[5][5] = {{0, 2, 2, 2, 2}, {2, 1, 3, 4, 3}, {2, 3, 1, 3, 4}, {2, 4, 3, 1, 3}, {2, 3, 4, 3, 1}};
+int dp[100001][5][5];
 
 int main()
 {
-    int n = 0, s = 1;
+    int DDRButton;
+    int count = 1;
+    int mp[5][5] = {{0, 2, 2, 2, 2}, {2, 1, 3, 4, 3}, {2, 3, 1, 3, 4}, {2, 4, 3, 1, 3}, {2, 3, 4, 3, 1}};
+
     for (int i = 0; i < 5; i++)
     {
         for (int j = 0; j < 5; j++)
         {
-            for (int k = 0; k < 100001; k++)
+            for (int k = 0; k <= 100000; k++)
             {
-                dp[k][i][j] = 100001 * 4; // 충분히 큰 수로 초기화
+                dp[k][i][j] = 100001 * 4;
             }
         }
     }
 
     dp[0][0][0] = 0;
-
     while (true)
     {
-        cin >> n;
-        if (n == 0)
-        {
+        cin >> DDRButton;
+        if (DDRButton == 0)
             break;
-        }
 
+        // 오른발 이동
         for (int i = 0; i < 5; i++)
         {
-            if (n == i)
-            { // 두 발이 같은 자리에 있을 수 없음
+            if (i == DDRButton)
                 continue;
-            }
             for (int j = 0; j < 5; j++)
             {
-                // 오른발을 옮겨서 현재 모습이 되었을 떄 최소의 합 저장
-                dp[s][i][n] = min(dp[s - 1][i][j] + mp[j][n], dp[s][i][n]);
+                dp[count][i][DDRButton] = min(dp[count][i][DDRButton], dp[count - 1][i][j] + mp[j][DDRButton]);
             }
         }
-        for (int j = 0; j < 5; j++)
+        // 왼발 이동
+        for (int i = 0; i < 5; i++)
         {
-            if (n == j)
-            { // 두 발이 같은 자리에 있을 수 없음
+            if (i == DDRButton)
                 continue;
-            }
-            for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
             {
-                // 왼발을 옮겨서 현재 모습이 되었을 떄 최소의 합 저장
-                dp[s][n][j] = min(dp[s - 1][i][j] + mp[i][n], dp[s][n][j]);
+                dp[count][DDRButton][i] = min(dp[count][DDRButton][i], dp[count - 1][j][i] + mp[j][DDRButton]);
             }
         }
-
-        s++;
+        count++;
     }
-    s--;
-    long minVal = INT_MAX;
+    count--;
+    int minVal = INT_MAX;
 
     for (int i = 0; i < 5; i++)
     {
         for (int j = 0; j < 5; j++)
         {
-            minVal = min(minVal, dp[s][i][j]);
+            minVal = min(minVal, dp[count][i][j]);
         }
     }
-    cout << minVal << '\n';
+
+    cout << minVal;
 }

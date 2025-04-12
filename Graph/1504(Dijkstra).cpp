@@ -20,20 +20,7 @@ vector<int> dajikstra(int a)
 
     while (!Q.empty())
     {
-        // pair<int, int> a = Q.top();
-        // Q.pop();
-        // int DDist = a.first;
-        // int DtargetNode = a.second;
-        // for (int i = 0; i < edge[DtargetNode].size(); i++)
-        // {
-        //     int dist = edge[DtargetNode][i].first;
-        //     int targetNode = edge[DtargetNode][i].second;
-        //     // 다음 방문 노드가 이미 최적의 경로를 보장할 경우
-        //     if (visited[targetNode] < DDist + dist)
-        //         continue;
-        //     visited[targetNode] = DDist + dist;
-        //     Q.push({DDist + dist, targetNode});
-        // }
+
         auto [curDist, cur] = Q.top();
         Q.pop();
 
@@ -69,14 +56,14 @@ int main()
     }
     cin >> node1 >> node2;
 
-    vector<int> a = dajikstra(1);
-    vector<int> b = dajikstra(node1);
-    vector<int> c = dajikstra(node2);
+    vector<int> v1 = dajikstra(1);
+    vector<int> v2 = dajikstra(node1);
+    vector<int> v3 = dajikstra(node2);
     // 경로 1 : 1 -> node1 -> node2 -> N
-    ans1 = a[node1] + b[node2] + c[N];
+    ans1 = v1[node1] + v2[node2] + v3[N];
 
     // 경로 2 : 1 -> node2 -> node1 -> N
-    ans2 = a[node2] + c[node1] + b[N];
+    ans2 = v1[node2] + v3[node1] + v2[N];
 
     if (ans1 >= 200000000 && ans2 > 200000000)
     {
