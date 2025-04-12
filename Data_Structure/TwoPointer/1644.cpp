@@ -54,11 +54,13 @@ int main()
             while (true)
             {
                 nextindex++;
-                if (!odd[nextindex] || nextindex > N)
+                if (nextindex > N || !odd[nextindex])
                 {
                     break;
                 }
             }
+            if (nextindex > N)
+                break;
             sum -= startindex;
             startindex = nextindex;
         }
@@ -70,11 +72,12 @@ int main()
             while (true)
             {
                 nextindex++;
-                if (!odd[nextindex] || nextindex > N)
+                if (nextindex > N || !odd[nextindex])
                 {
                     break;
                 }
             }
+
             endindex = nextindex;
             sum += endindex;
         }
