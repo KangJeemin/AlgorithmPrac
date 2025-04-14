@@ -20,7 +20,7 @@ int main()
         Q.push(make_pair(a, i));
     }
 
-    while (ans < 3 && !Q.empty())
+    while (ans < K && !Q.empty())
     {
         pair<string, int> data;
         data = Q.front();
