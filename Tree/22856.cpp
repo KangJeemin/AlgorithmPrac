@@ -15,14 +15,10 @@ int ans = 0;
 void inorder(int node)
 {
     if (node == -1)
-    {
         return;
-    }
-    visitRootNode.push_back(node);
-    for (int child : Tree[node])
-    {
-        inorder(child);
-    }
+    inorder(Tree[node][0]);        // 왼쪽
+    visitRootNode.push_back(node); // 루트
+    inorder(Tree[node][1]);        // 오른쪽
 }
 
 int main()
@@ -45,8 +41,18 @@ int main()
 
     int cur = 1;
     visited[cur] = true;
-    while (cur != lastNode)
+    // 마지막 노드에 도달했을때, 바로 종료하면 안됨
+    // while(cur==lastNode)
+    while (true)
     {
+        // 종료 조건: 현재 노드가 마지막 노드이고 더 이상 이동할 자식이 없을 때
+        if (cur == lastNode &&
+            (Tree[cur][0] == -1 || visited[Tree[cur][0]]) &&
+            (Tree[cur][1] == -1 || visited[Tree[cur][1]]))
+        {
+            break;
+        }
+
         if (!visited[Tree[cur][0]] && Tree[cur][0] != -1)
         {
             cur = Tree[cur][0];
