@@ -32,8 +32,17 @@ int main()
         cin >> a >> b >> c;
         Tree[a].push_back(b);
         Tree[a].push_back(c);
-        parentNode[b] = a;
-        parentNode[c] = a;
+
+        // 여기서 DoubleFree 에러 발생했음.
+        // 만약 b or c 가 -1 일 경우, 인덱스 에러 발생
+        // parentNode[b] = a;
+        // parentNode[c] = a;
+
+        if (b != -1)
+            parentNode[b] = a;
+
+        if (c != -1)
+            parentNode[c] = a;
     }
 
     inorder(1);
@@ -53,11 +62,11 @@ int main()
             break;
         }
 
-        if (!visited[Tree[cur][0]] && Tree[cur][0] != -1)
+        if (Tree[cur][0] != -1 && !visited[Tree[cur][0]])
         {
             cur = Tree[cur][0];
         }
-        else if (!visited[Tree[cur][1]] && Tree[cur][1] != -1)
+        else if (Tree[cur][1] != -1 && !visited[Tree[cur][1]])
         {
 
             cur = Tree[cur][1];
