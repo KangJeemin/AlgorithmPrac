@@ -1,11 +1,13 @@
 #include <iostream>
 #include <vector>
-#include <queue>
 
 using namespace std;
-vector<int> Tree[1000001];
-vector<int> visited;
-int N, M;
+vector<int> parent;
+static int N, M;
+
+int find(int node);
+
+bool unionset(int a, int b);
 int main()
 {
     ios_base::sync_with_stdio(false);
@@ -13,47 +15,61 @@ int main()
     cout.tie(NULL);
 
     cin >> N >> M;
-    visited.resize(N + 1, 0);
+    parent.resize(N + 1, 0);
+
+    int cutcount = 0;
+
+    // 자기 자신으로 초기화
+    for (int i = 1; i <= N; i++)
+    {
+        parent[i] = i;
+    }
 
     for (int i = 0; i < M; i++)
     {
         int a, b;
         cin >> a >> b;
-        Tree[a].push_back(b);
+        // 사이클이 발견되어 잘라야하는 경우
+        if (!unionset(a, b))
+            cutcount++;
     }
-
-    // 덩어리 트리 만들기
-    int group = 1;
-    int cutcount = 0;
+    // 연결 요소 개수 세기
+    int components = 0;
     for (int i = 1; i <= N; i++)
     {
-
-        if (!visited[i])
-        {
-            queue<int> Q;
-            Q.push(i);
-            visited[i] = group;
-            while (!Q.empty())
-            {
-                int node = Q.front();
-                Q.pop();
-
-                for (int child : Tree[node])
-                {
-                    if (!visited[child])
-                    {
-                        Q.push(child);
-                        visited[child] = group;
-                    }
-                    else
-                    {
-                        cutcount++;
-                    }
-                }
-            }
-            group++;
-        }
+        if (find(i) == i)
+            components++;
     }
 
-    cout << group - 2 + cutcount;
+    int add = components - 1; // 이어야 하는 간선 수
+    cout << add + cutcount;
+}
+
+int find(int node)
+{
+    if (parent[node] == node)
+    {
+        return node;
+    }
+    parent[node] = find(parent[node]);
+    return parent[node];
+}
+bool unionset(int a, int b)
+{
+    int pa = find(a);
+    int pb = find(b);
+
+    // 사이클 발견
+    if (pa == pb)
+        return false;
+
+    if (pa > pb)
+    {
+        parent[pb] = pa;
+    }
+    else
+    {
+        parent[pa] = pb;
+    }
+    return true;
 }
