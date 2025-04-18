@@ -59,17 +59,17 @@ rl.on("line",(line)=>{
 
     let output = [];
     for(let i=1;i<=N;i++){
-        const num = input[i];
+        const num = +input[i];
         
         if(num==0){
-            console.log(prioiryQueue.print());
+            output.push(prioiryQueue.print());
         }
         else{
             prioiryQueue.push(num);
         }
     }
 
-    // console.log(output.join('\n'));
+    console.log(output.join('\n'));
 
   
 
