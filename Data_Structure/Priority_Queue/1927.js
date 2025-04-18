@@ -63,17 +63,13 @@ rl.on("line",(line)=>{
         
         if(num==0){
             output.push(prioiryQueue.print());
+            // console.log(prioiryQueue.print()); 시간초과 발생
         }
         else{
             prioiryQueue.push(num);
         }
     }
-
     console.log(output.join('\n'));
+    //
 
-  
-
-
-    
-    
 })
