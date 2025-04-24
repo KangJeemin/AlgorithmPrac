@@ -16,27 +16,58 @@ const input = [];
 rl.on('line',(line)=>{
     input.push(line.trim());
 }).on('close',()=>{
-    const [T,W] = input[0].splice(' ').map(Number);
+    const [T,W] = input[0].split(' ').map(Number);
     const Tree = input.slice(1).map(Number);
-    const dp = Array.from( {length:T+1},()=> Array.from( {length:3},()=>Array(W+1).fill(0)));
+    //시간, 자두의 위치, 총이동횟수 
+    const dp = Array.from( {length:T},()=> Array.from( {length:3},()=>Array(W+1).fill(0)));
 
-    for(let i=0;i<T;i++){
-        const treeNum = Tree[i];
+    // 초기작업
+    if(Tree[0]==1){
+        dp[0][1][0] = 1;
+        dp[0][2][1] = 0;
+    }
+    else{
+        dp[0][1][0] = 0;
+        dp[0][2][1] = 1;
+    }
+    
 
+    for(let t=1;t<T;t++){
+        const treeNum = Tree[t];
+
+        // 이걸 생각 못했네.
+        for(let w=0;w<=W;w++){
+            if(treeNum===1){
+                dp[t][1][w] = Math.max(dp[t-1][1][w]+1, w>0 ? dp[t-1][2][w-1] + 1 :0);
+                dp[t][2][w] = Math.max(dp[t-1][2][w], w>0 ? dp[t-1][1][w-1] :0);
+            }
+            else{
+                dp[t][2][w] = Math.max(dp[t-1][2][w]+1, w>0 ? dp[t-1][1][w-1]+1 :0);
+                dp[t][1][w] = Math.max(dp[t-1][1][w], w>0 ? dp[t-1][1][w-1]:0);
+            }
+        }
     }
 
+    let maxAns =0;
+    for(let w=0;w<=W;w++){
+        maxAns = Math.max(maxAns,dp[T-1][1][w],dp[T-1][2][w],maxAns);
+    }
+    console.log(maxAns);
+
 })
+
+
 //T, 자두의 위치, 이동횟수 
-[1][1][0] = 0
-[1][2][1] = 2
+// [1][1][0] = 0
+// [1][2][1] = 2
 
-[2][1][0] = 0 + 1; => [1][1][0] + 1
-[2][2][1] = 2 + 0; => [1][2][1] + 0
-[2][1][2] = 2 + 1  => [1][2][1] + 1;
+// [2][1][0] = 0 + 1; => [1][1][0] + 1
+// [2][2][1] = 2 + 0; => [1][2][1] + 0
+// [2][1][2] = 2 + 1  => [1][2][1] + 1;
 
-[3][1][0] = 0 + 1 + 1; => [2][1][0] +1;
+// [3][1][0] = 0 + 1 + 1; => [2][1][0] +1;
 
-[3][2][1] = 0 + 1 + 0; => [2][1][0] + 0;
-[3][2][1] = 2 + 0 + 0  => [2][2][1] + 0
+// [3][2][1] = 0 + 1 + 0; => [2][1][0] + 0;
+// [3][2][1] = 2 + 0 + 0  => [2][2][1] + 0
 
-[3][1][2] = 2 + 1 + 1 => [2][1][2] + 1 
+// [3][1][2] = 2 + 1 + 1 => [2][1][2] + 1 
