@@ -23,8 +23,9 @@ rl.on("line",(line)=>{
         let queue = [[startX,startY,1]];
         visited[startX][startY]=true;
 
+        let Area = 1;
         while(queue.length){
-            const [X,Y,Area] = queue.shift();
+            const [X,Y] = queue.shift();
 
             if(Area > area){
                 area = Area;
@@ -41,9 +42,14 @@ rl.on("line",(line)=>{
                     !visited[NX][NY] && paper[NX][NY] === 1
                   ){
                     visited[NX][NY]=true;
-                    queue.push([NX,NY,Area+1]);
+                    queue.push([NX,NY]);
+                    Area++;
                 }
             }
+        }
+
+        if(Area > area){
+            area = Area;
         }
     }
 
