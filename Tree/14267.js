@@ -28,30 +28,27 @@ rl.on("line",(line)=>{
 
     function setCompelementSum () {
         complement.forEach(e=>{
-            complement[e[0]-1]+=w;
+            complementSum[e[0]-1]+=e[1];
         })
     }
     setCompelementSum();
 
-    function calculateComplement(complement){
-        complement.forEach(element => {
-            let node = element[0]-1;
-            let w = element[1];
-            const DFS = (node,w)=>{
-                complementSum[node]+=w;
-                for(let i=0;i<tree[node].length;i++){
-                    DFS(tree[node][i],w);
-                }
+    function calculateComplement(){
+        const DFS = (node,acc)=>{
+            let sum = complementSum[node];
+            AnsComplementSum[node]+= sum + acc;
+            for(let i=0;i<tree[node].length;i++){
+                DFS(tree[node][i],sum+acc);
             }
-            DFS(node,w);
-        });
+        }
+        DFS(0,0);
+        
     }
 
-    calculateComplement(complement);
+    calculateComplement();
 
 
-    console.log(complementSum.join(' '));
-
+    console.log(AnsComplementSum.join(' '));
 
     
 })
