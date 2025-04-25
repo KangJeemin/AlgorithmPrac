@@ -17,12 +17,8 @@ rl.on('line',(line)=>{
     let odd =0;
     let longest = 0;
 
-    if(inputArray[0]%2 ===1){
-        odd = 1;
-    }
 
-    while(start<=end && end-1 < N){
-        end++;
+    while(end < N){
         // 홀수인경우
         if(inputArray[end] % 2 ===1){
             odd++;
@@ -40,6 +36,8 @@ rl.on('line',(line)=>{
             start++;
         }
         longest = Math.max(end-start+1-odd,longest);
+        end++;
+
     }
 
     console.log(longest);
